@@ -1,0 +1,343 @@
+<!--
+Employee Management System - Update Employee Template
+
+This template provides a Bootstrap-styled form for updating existing employees.
+It includes form validation, responsive design, and user-friendly feedback.
+The form is pre-populated with existing employee data.
+
+Features:
+- Bootstrap 5 form components with validation styling
+- Responsive layout with proper field organization
+- CSRF protection for form security
+- Navigation breadcrumbs and back button
+- Professional styling with icons and proper spacing
+- Pre-filled form fields with current employee data
+
+Template Variables:
+- employee: Employee object to be updated
+- employee.first_name: Current first name
+- employee.last_name: Current last name
+- employee.email: Current email
+- employee.position: Current position
+- employee.hire_date: Current hire date
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Meta tags for character encoding and viewport settings -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Page title displayed in browser tab -->
+    <title>Update Employee - Employee Management System</title>
+    
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    
+    <!-- Custom CSS for additional styling -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <!-- Brand/Logo -->
+        <a class="navbar-brand" href="{% url 'home' %}">
+          <i class="bi bi-people-fill me-2"></i>
+          Employee Management
+        </a>
+        
+        <!-- Mobile toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Navigation links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}">
+                <i class="bi bi-house-fill me-1"></i>
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create' %}">
+                <i class="bi bi-person-plus-fill me-1"></i>
+                Add Employee
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container mt-4">
+      <!-- Breadcrumb Navigation -->
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'home' %}" class="text-decoration-none">
+              <i class="bi bi-house me-1"></i>
+              Home
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <i class="bi bi-pencil-square me-1"></i>
+            Update Employee
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="row mb-4">
+        <div class="col">
+          <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h2">
+              <i class="bi bi-pencil-square me-2 text-warning"></i>
+              Update Employee Information
+            </h1>
+            <!-- Back to Home Button -->
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left me-2"></i>
+              Back to Home
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employee Info Card -->
+      <div class="row mb-4">
+        <div class="col">
+          <div class="alert alert-info d-flex align-items-center" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <div>
+              <strong>Updating:</strong> {{ employee.first_name }} {{ employee.last_name }}
+              <span class="text-muted ms-2">(ID: {{ employee.id }})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Update Employee Form -->
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+              <h5 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Employee Information
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Form with CSRF protection and proper encoding -->
+              <form action="{% url 'update_employee' employee.id %}" method="post" class="needs-validation" novalidate>
+                <!-- Django CSRF Token for security -->
+                {% csrf_token %}
+                
+                <!-- Personal Information Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h6 class="text-muted mb-3">
+                      <i class="bi bi-person me-2"></i>
+                      Personal Information
+                    </h6>
+                  </div>
+                  
+                  <!-- First Name Field -->
+                  <div class="col-md-6 mb-3">
+                    <label for="first_name" class="form-label">
+                      First Name <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-person"></i>
+                      </span>
+                      <input type="text" 
+                             class="form-control" 
+                             id="first_name" 
+                             name="first_name" 
+                             value="{{ employee.first_name }}"
+                             placeholder="Enter first name"
+                             required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid first name.
+                    </div>
+                  </div>
+                  
+                  <!-- Last Name Field -->
+                  <div class="col-md-6 mb-3">
+                    <label for="last_name" class="form-label">
+                      Last Name <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-person"></i>
+                      </span>
+                      <input type="text" 
+                             class="form-control" 
+                             id="last_name" 
+                             name="last_name" 
+                             value="{{ employee.last_name }}"
+                             placeholder="Enter last name"
+                             required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid last name.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h6 class="text-muted mb-3">
+                      <i class="bi bi-envelope me-2"></i>
+                      Contact Information
+                    </h6>
+                  </div>
+                  
+                  <!-- Email Field -->
+                  <div class="col-md-12 mb-3">
+                    <label for="email" class="form-label">
+                      Email Address <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                      </span>
+                      <input type="email" 
+                             class="form-control" 
+                             id="email" 
+                             name="email" 
+                             value="{{ employee.email }}"
+                             placeholder="employee@company.com"
+                             required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid email address.
+                    </div>
+                    <div class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                </div>
+
+                <!-- Professional Information Section -->
+                <div class="row mb-4">
+                  <div class="col-12">
+                    <h6 class="text-muted mb-3">
+                      <i class="bi bi-briefcase me-2"></i>
+                      Professional Information
+                    </h6>
+                  </div>
+                  
+                  <!-- Position Field -->
+                  <div class="col-md-6 mb-3">
+                    <label for="position" class="form-label">
+                      Position <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-briefcase"></i>
+                      </span>
+                      <input type="text" 
+                             class="form-control" 
+                             id="position" 
+                             name="position" 
+                             value="{{ employee.position }}"
+                             placeholder="e.g., Software Developer"
+                             required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid position.
+                    </div>
+                  </div>
+                  
+                  <!-- Hire Date Field -->
+                  <div class="col-md-6 mb-3">
+                    <label for="hire_date" class="form-label">
+                      Hire Date <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <i class="bi bi-calendar"></i>
+                      </span>
+                      <input type="date" 
+                             class="form-control" 
+                             id="hire_date" 
+                             name="hire_date"
+                             value="{{ employee.hire_date|date:'Y-m-d' }}"
+                             required>
+                    </div>
+                    <div class="invalid-feedback">
+                      Please provide a valid hire date.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="d-flex justify-content-between">
+                      <!-- Submit Button -->
+                      <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Update Employee
+                      </button>
+                      
+                      <!-- Cancel Button -->
+                      <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancel
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-3">
+      <div class="container text-center">
+        <p class="text-muted mb-0">
+          Employee Management System &copy; 2024 | Powered by Django & Bootstrap
+        </p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Form Validation Script -->
+    <script>
+      // Bootstrap form validation
+      (function () {
+        'use strict'
+        
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+          }, false)
+        })
+      })()
+    </script>
+  </body>
+</html>
